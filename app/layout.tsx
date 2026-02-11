@@ -9,6 +9,7 @@ import "@/styles/errors.css";
 import "@/styles/content.css";
 import "@/styles/welcome.css";
 import "@/styles/profile.css";
+import "@/styles/friends.css";
 import Navigator from "@/components/Navigator";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
