@@ -144,7 +144,7 @@ Task 0 (Project Setup)
 
 ## TODOs
 
-- [ ] 0. Project Scaffolding & Test Infrastructure
+- [x] 0. Project Scaffolding & Test Infrastructure
 
   **What to do**:
   - Remove all existing MCP aggregator code from the repo (keep `.git`, `.sisyphus/`)
@@ -188,7 +188,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 1. CSS System (Base + Per-Feature Organization)
+- [x] 1. CSS System (Base + Per-Feature Organization)
 
   **What to do**:
   - Create a CSS file organization with a base file for shared styles and per-feature CSS files:

@@ -81,3 +81,31 @@
 - Task 2: Create database schema (users, posts, comments, etc.)
 - Task 3: Configure Better Auth for authentication
 - Task 4+: Build feature-specific CSS files (profile.css, feed.css, etc.)
+
+## Schema Creation (lib/schema.ts)
+
+### Completed
+- Created comprehensive Drizzle ORM SQLite schema with 24 tables
+- All tables properly typed with drizzle-orm/sqlite-core
+- Foreign key relationships established correctly
+- Default functions for UUIDs and timestamps working
+- Build verification passed with no TypeScript errors
+
+### Schema Organization
+Tables grouped into logical domains:
+- **Auth**: user, session, account, verification (Better Auth compatible)
+- **Profile**: profile (1:1 with user)
+- **Social**: friendship, poke
+- **Content**: statusUpdate, wallPost, photoAlbum, photo, photoTag
+- **Messaging**: message
+- **Community**: group, groupMembership, groupWallPost, event, eventRsvp
+- **Notifications**: notification
+- **Feed**: feedItem
+
+### Key Design Decisions
+- UUID primary keys with crypto.randomUUID() defaults
+- Timestamp fields use integer mode with Date defaults
+- Boolean fields use integer mode (SQLite compatibility)
+- Enum fields use text with enum array validation
+- Foreign key references properly typed
+- Unique constraints on email and profile userId
