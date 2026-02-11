@@ -317,3 +317,70 @@ Tables grouped into logical domains:
 - Task 6: Create login page and authentication flow
 - Task 7: Build home feed page with status updates
 - Task 8: Create user profile pages
+
+## 2026-02-11 Task 6: Sidebar Login Form Complete
+
+### Files Created
+- `components/SidebarLoginForm.tsx` - Client component with login form and Better Auth integration
+- `app/home.php/page.tsx` - Placeholder home page for logged-in users
+
+### Files Modified
+- `components/Sidebar.tsx` - Made client component, added auth-aware rendering
+
+### Key Implementation Details
+
+1. **SidebarLoginForm Component**
+   - Client component ('use client') with form state management
+   - Fields: email, password inputs with proper styling
+   - "Remember me" checkbox (stored in state, not yet persisted)
+   - Uses `signIn.email({ email, password })` from Better Auth
+   - Error display with red border and pink background (#fdd)
+   - Loading state disables form during submission
+   - On success: redirects to `/home.php`
+   - On error: displays error message from Better Auth
+
+2. **Sidebar Component Updates**
+   - Made client component to use `useSession()` hook
+   - Conditional rendering:
+     - When logged out: shows SidebarLoginForm + search form
+     - When logged in: shows navigation links (News Feed, Messages, Events, Photos, Groups) + search form
+   - Navigation links point to placeholder pages (messages.php, events.php, etc.)
+
+3. **Home Page Placeholder**
+   - Simple page at `/home.php` with welcome message
+   - Will be fully built in Task 10 (news feed)
+
+### Key Learnings
+
+1. **Better Auth Client Methods**
+   - signIn is accessed as `signIn.email()` not `signIn()`
+   - Returns object with `error` property if login fails
+   - Error object has `message` property for user-facing error text
+
+2. **useSession Hook Behavior**
+   - Returns `{ data: session }` where session is null when logged out
+   - Automatically refetches on mount and after auth state changes
+   - Safe to use in client components for conditional rendering
+
+3. **Form Error Display**
+   - Inline error messages work better than separate error boxes for sidebar
+   - Used inline styling to match 2007 Facebook error styling
+   - Error clears on new submission attempt
+
+4. **Client Component in Layout**
+   - Sidebar must be client component to use useSession hook
+   - This is acceptable since Sidebar is primarily UI/interaction
+   - Layout itself remains server component
+
+### Verification Results
+✓ npm run build: Succeeds with no TypeScript errors
+✓ npx tsc --noEmit: No diagnostics
+✓ All 5 files created/modified correctly
+✓ Commit created: "feat: add sidebar login form matching 2007 Facebook layout"
+✓ Routes generated: / (static), /home.php (static), /api/auth/[...all] (dynamic)
+
+### Next Steps
+- Task 7: Create profile pages
+- Task 8: Build friend request system
+- Task 9: Implement wall posts and comments
+- Task 10: Build news feed with status updates

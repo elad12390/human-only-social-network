@@ -489,7 +489,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 6. Login Page / Sidebar Login
+- [x] 6. Login Page / Sidebar Login
 
   **What to do**:
   - Implement login in the sidebar (matches 2007 Facebook where login was in the left sidebar)
