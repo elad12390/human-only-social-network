@@ -528,7 +528,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 7. Profile Page & Wall
+- [x] 7. Profile Page & Wall
 
   **What to do**:
   - Create profile page at `/profile.php` (with `?id=` query param)

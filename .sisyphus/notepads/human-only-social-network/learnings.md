@@ -384,3 +384,82 @@ Tables grouped into logical domains:
 - Task 8: Build friend request system
 - Task 9: Implement wall posts and comments
 - Task 10: Build news feed with status updates
+
+## 2026-02-11 Task 7: Profile Page with Wall Posts Complete
+
+### Files Created
+- `styles/profile.css` - Profile page layout with float-based design
+- `lib/actions/wall.ts` - Server actions for wall post creation and retrieval
+- `components/WallPostForm.tsx` - Client component for wall post form
+- `app/profile.php/page.tsx` - Profile page server component with tabs
+- `__tests__/wall.test.ts` - Wall post functionality tests
+
+### Files Modified
+- `app/layout.tsx` - Added import for profile.css
+
+### Key Implementation Details
+
+1. **Profile Page Structure**
+   - Server component at `/profile.php?id=USER_ID`
+   - Reads user ID from searchParams, defaults to logged-in user
+   - Displays profile photo (placeholder if none), name, member since date, bio
+   - Shows "Edit Profile" link only on own profile
+   - Tabbed interface with Wall (active), Info, Photos, Friends tabs
+
+2. **Wall Post Functionality**
+   - `createWallPost(authorId, profileOwnerId, content)` validates and creates posts
+   - Max 5000 character limit enforced
+   - Empty content rejected
+   - Creates both wall_post and feed_item records
+   - `getWallPosts(profileOwnerId)` returns posts ordered by createdAt DESC with author info
+
+3. **WallPostForm Component**
+   - Client component with textarea input
+   - Character counter (max 5000)
+   - Error display for validation failures
+   - Loading state during submission
+   - Calls server action on form submit
+
+4. **CSS Styling**
+   - Float-based layout (no flexbox/grid for 2007 authenticity)
+   - Profile photo: 200x200px with border
+   - Wall posts: simple text display with author name and timestamp
+   - Form styling matches existing form.css classes
+   - Clearfix pattern for float containment
+
+### Key Learnings
+
+1. **Database Queries in Next.js**
+   - Use `db.select().from(schema.table).where()` pattern instead of `db.query.table.findFirst()`
+   - The query API requires proper schema typing that may not be available in all contexts
+   - Direct select/where pattern is more reliable for server components
+
+2. **Server Actions with Database**
+   - Server actions can directly import and use db instance
+   - Validation should happen in server action before DB insert
+   - Return success/error objects for client-side handling
+   - Feed items should be created alongside content items for activity tracking
+
+3. **Profile Page Architecture**
+   - Server component fetches all data (user, profile, wall posts)
+   - WallPostForm is client component for interactivity
+   - Tabs are static links (no client-side tab switching in 2007 style)
+   - Own profile check uses session comparison
+
+4. **Testing Wall Posts**
+   - In-memory SQLite works well for testing
+   - Test database setup requires manual table creation (not using Drizzle migrations)
+   - Foreign key constraints must be explicitly enabled
+   - Tests verify DB operations directly without server actions
+
+### Verification Results
+✓ All 16 tests passing (4 test files)
+✓ npm run build succeeds with no TypeScript errors
+✓ npx tsc --noEmit: No diagnostics
+✓ Commit created: "feat: add profile page with wall posts and tabbed layout"
+✓ Routes generated: /profile.php (dynamic), /home.php (static), / (static)
+
+### Next Steps
+- Task 8: Build friend request system
+- Task 9: Implement wall post comments (if needed for 2007 feature set)
+- Task 10: Create news feed with status updates

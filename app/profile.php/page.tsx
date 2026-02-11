@@ -5,7 +5,9 @@ import { auth } from '@/lib/auth'
 import * as schema from '@/lib/schema'
 import { eq } from 'drizzle-orm'
 import WallPostForm from '@/components/WallPostForm'
+import StatusUpdateForm from '@/components/StatusUpdateForm'
 import { getWallPosts } from '@/lib/actions/wall'
+import { getLatestStatus } from '@/lib/actions/status'
 
 interface ProfilePageProps {
   searchParams: Promise<{ id?: string }>
@@ -49,6 +51,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   const profile = profiles[0]
 
   const wallPosts = await getWallPosts(userId)
+  const latestStatus = await getLatestStatus(userId)
 
   const isOwnProfile = session?.user?.id === userId
 
@@ -64,6 +67,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         </div>
         <div className="profile_info">
           <div className="profile_name">{user.name}</div>
+          {latestStatus && (
+            <div className="profile_status" style={{ marginTop: '4px', fontStyle: 'italic' }}>
+              is {latestStatus.content}
+            </div>
+          )}
           <div className="profile_status">
             Member since {user.createdAt?.toLocaleDateString() || 'Unknown'}
           </div>
@@ -96,13 +104,20 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         </div>
       </div>
 
-      {isOwnProfile && session?.user?.id && (
-        <WallPostForm
-          authorId={session.user.id}
-          profileOwnerId={userId}
-          onPostCreated={() => {}}
-        />
-      )}
+       {isOwnProfile && session?.user?.id && (
+         <>
+           <StatusUpdateForm
+             userId={session.user.id}
+             userName={user.name}
+             onStatusCreated={() => {}}
+           />
+           <WallPostForm
+             authorId={session.user.id}
+             profileOwnerId={userId}
+             onPostCreated={() => {}}
+           />
+         </>
+       )}
 
       {wallPosts.length === 0 ? (
         <div className="standard_message">No wall posts yet.</div>
