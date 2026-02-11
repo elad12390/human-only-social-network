@@ -109,3 +109,32 @@ Tables grouped into logical domains:
 - Enum fields use text with enum array validation
 - Foreign key references properly typed
 - Unique constraints on email and profile userId
+
+## 2026-02-11 Task 2: Database Schema Tests Complete
+
+### Files Created
+- `__tests__/schema.test.ts` - Comprehensive schema validation tests
+
+### Test Coverage
+- Table creation without errors
+- User insert and retrieval
+- Unique email constraint enforcement
+- Profile creation linked to user
+- Friendship creation between users
+
+### Key Learnings
+1. In-memory SQLite databases (:memory:) work perfectly for testing
+2. Foreign key constraints must be explicitly enabled with `pragma('foreign_keys = ON')`
+3. WAL mode pragma is set but not required for in-memory databases
+4. Drizzle ORM insert/select operations work seamlessly with test databases
+5. Test isolation: each test gets a fresh in-memory database via createTestDb()
+
+### Verification Results
+✓ All 5 schema tests passing
+✓ Total test suite: 6 tests passing (setup.test.ts + schema.test.ts)
+✓ Commit created: "feat: define complete database schema for all social features"
+✓ No TypeScript errors in test file
+
+### Next Steps
+- Task 3: Configure Better Auth for authentication
+- Task 4: Build API routes for user management

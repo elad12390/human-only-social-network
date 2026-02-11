@@ -258,7 +258,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 2. Database Schema (ALL tables)
+- [x] 2. Database Schema (ALL tables)
 
   **What to do**:
   - Create `lib/schema.ts` with ALL Drizzle table definitions for the entire app
