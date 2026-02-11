@@ -7,9 +7,10 @@ import { eq } from 'drizzle-orm'
 import WallPostForm from '@/components/WallPostForm'
 import StatusUpdateForm from '@/components/StatusUpdateForm'
 import FriendButton from '@/components/FriendButton'
+import PokeButton from '@/components/PokeButton'
 import { getWallPosts } from '@/lib/actions/wall'
 import { getLatestStatus } from '@/lib/actions/status'
-import { getFriends } from '@/lib/actions/friends'
+import { getFriends, getFriendshipStatus } from '@/lib/actions/friends'
 
 interface ProfilePageProps {
   searchParams: Promise<{ id?: string; tab?: string }>
@@ -52,11 +53,12 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
 
   const profile = profiles[0]
 
-   const wallPosts = await getWallPosts(userId)
-   const latestStatus = await getLatestStatus(userId)
-   const friends = await getFriends(userId)
+    const wallPosts = await getWallPosts(userId)
+    const latestStatus = await getLatestStatus(userId)
+    const friends = await getFriends(userId)
 
-   const isOwnProfile = session?.user?.id === userId
+    const isOwnProfile = session?.user?.id === userId
+    const friendshipRecord = session?.user?.id && session.user.id !== userId ? await getFriendshipStatus(session.user.id, userId) : null
    const activeTab = params.tab || 'wall'
 
    return (
@@ -93,15 +95,22 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
          <div className="clearfix"></div>
        </div>
 
-       {!isOwnProfile && session?.user?.id && (
-         <div className="friend_button">
-           <FriendButton
-             currentUserId={session.user.id}
-             profileUserId={userId}
-             profileUserName={user.name}
-           />
-         </div>
-       )}
+        {!isOwnProfile && session?.user?.id && (
+          <div className="friend_button">
+            <FriendButton
+              currentUserId={session.user.id}
+              profileUserId={userId}
+              profileUserName={user.name}
+            />
+            {friendshipRecord?.status === 'accepted' && (
+              <PokeButton
+                currentUserId={session.user.id}
+                profileUserId={userId}
+                profileUserName={user.name}
+              />
+            )}
+          </div>
+        )}
 
        <div id="tabs">
          <div className={activeTab === 'wall' ? 'activetab' : ''}>

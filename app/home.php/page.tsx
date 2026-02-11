@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import StatusUpdateForm from '@/components/StatusUpdateForm'
 import { getFeedItems, getFeedItemCount } from '@/lib/actions/feed'
+import { getUnseenPokes } from '@/lib/actions/poke'
+import PokeBackButton from '@/components/PokeBackButton'
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const headersList = await headers()
@@ -17,6 +19,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const feedItems = await getFeedItems(session.user.id, currentPage, 20)
   const totalCount = await getFeedItemCount(session.user.id)
   const totalPages = Math.ceil(totalCount / 20) || 1
+  const unseenPokes = await getUnseenPokes(session.user.id)
 
   return (
     <div id="content">
@@ -25,6 +28,17 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         userName={session.user.name || 'You'}
         onStatusCreated={() => {}}
       />
+      {unseenPokes.length > 0 && (
+        <div style={{ padding: '10px 20px', borderBottom: '1px solid #e9e9e9', background: '#fff9d7' }}>
+          {unseenPokes.map((poke) => (
+            <div key={poke.id} style={{ marginBottom: '4px' }}>
+              <a href={'/profile.php?id=' + poke.pokerId} style={{ fontWeight: 'bold', color: '#3b5998' }}>{poke.pokerName}</a>
+              {' poked you. '}
+              <PokeBackButton pokeId={poke.id} currentUserId={session.user.id} />
+            </div>
+          ))}
+        </div>
+      )}
       {feedItems.length === 0 ? (
         <div className="feed_empty">No news to show. Add some friends to see their activity here!</div>
       ) : (
