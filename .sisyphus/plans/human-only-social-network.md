@@ -444,7 +444,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 5. Registration Page
+- [x] 5. Registration Page
 
   **What to do**:
   - Create registration page matching 2007 Facebook signup
