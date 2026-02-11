@@ -138,3 +138,54 @@ Tables grouped into logical domains:
 ### Next Steps
 - Task 3: Configure Better Auth for authentication
 - Task 4: Build API routes for user management
+
+## 2026-02-11 Task 3: Better Auth Configuration Complete
+
+### Files Created
+- `lib/auth.ts` - Server-side Better Auth configuration with Drizzle adapter
+- `lib/auth-client.ts` - Client-side auth utilities (React hooks)
+- `app/api/auth/[...all]/route.ts` - Next.js API route handler
+- `__tests__/auth.test.ts` - Auth configuration and validation tests
+
+### Key Implementation Details
+1. **Server Config (lib/auth.ts)**
+   - Uses `betterAuth()` with `drizzleAdapter(db, { provider: 'sqlite' })`
+   - Enables `emailAndPassword: { enabled: true }`
+   - Secret from env with fallback for testing: `process.env.BETTER_AUTH_SECRET || 'test-secret-do-not-use-in-production'`
+   - Exports `auth` instance for use in API routes
+
+2. **Client Config (lib/auth-client.ts)**
+   - Uses `createAuthClient` from 'better-auth/react'
+   - baseURL from env: `process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000'`
+   - Exports destructured methods: `signIn`, `signUp`, `signOut`, `useSession`, `getSession`
+   - Marked with 'use client' directive
+
+3. **API Route Handler (app/api/auth/[...all]/route.ts)**
+   - Imports auth from `@/lib/auth`
+   - Uses `toNextJsHandler(auth)` from 'better-auth/next-js'
+   - Exports GET and POST handlers
+
+### Test Coverage
+- Auth instance exports correctly
+- Auth handler can be created without errors
+- Email format validation (regex pattern)
+- Password requirements validation (minimum 8 characters)
+- emailAndPassword plugin is enabled
+
+### Key Learnings
+1. Better Auth requires `BETTER_AUTH_SECRET` env var - provide fallback for testing
+2. Drizzle adapter needs `provider: 'sqlite'` and schema mapping
+3. Client-side auth uses `createAuthClient` from 'better-auth/react' (not 'better-auth/client')
+4. Next.js API routes use `toNextJsHandler()` to mount auth handler
+5. Test environment doesn't inherit .env.local - use fallback values in code
+6. Build warning about "Base URL could not be determined" is expected - will be set in production
+
+### Verification Results
+✓ npm run build: Succeeds (warning about base URL is expected)
+✓ npx vitest run: All 12 tests passing (3 test files)
+✓ No TypeScript errors
+✓ Commit created: "feat: configure Better Auth with Drizzle adapter and email/password"
+
+### Next Steps
+- Task 4: Build authentication UI components (login/signup forms)
+- Task 5: Create user profile management endpoints

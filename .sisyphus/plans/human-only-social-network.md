@@ -335,7 +335,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 3. Better Auth Setup
+- [x] 3. Better Auth Setup
 
   **What to do**:
   - Create `lib/auth.ts` — Better Auth configuration with Drizzle adapter

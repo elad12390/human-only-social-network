@@ -7,6 +7,9 @@ import "@/styles/footer.css";
 import "@/styles/tabs.css";
 import "@/styles/errors.css";
 import "@/styles/content.css";
+import Navigator from "@/components/Navigator";
+import Sidebar from "@/components/Sidebar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Human-Only Social Network",
@@ -21,7 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <div id="book">
+          <Sidebar />
+          <div id="widebar">
+            <Navigator />
+            <div id="page_body">
+              <div id="content_shadow">
+                <div id="content">
+                  {children}
+                </div>
+              </div>
+            </div>
+          </div>
+          <Footer />
+          <div className="clearfix"></div>
+        </div>
       </body>
     </html>
   );
