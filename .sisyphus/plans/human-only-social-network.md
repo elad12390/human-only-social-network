@@ -378,7 +378,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 4. Layout Shell (Header, Sidebar, Footer)
+- [x] 4. Layout Shell (Header, Sidebar, Footer)
 
   **What to do**:
   - Create `app/layout.tsx` — root layout with the Facebook 2007 HTML structure

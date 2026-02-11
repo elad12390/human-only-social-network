@@ -1,0 +1,79 @@
+/* Facebook 2007 Welcome/Registration Page */
+#welcome {
+  padding: 20px;
+  overflow: hidden;
+}
+
+#welcome h1 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#welcome .welcome_message {
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+}
+
+#welcome .left_column {
+  float: left;
+  width: 300px;
+  padding-right: 20px;
+}
+
+#welcome .right_column {
+  float: right;
+  width: 300px;
+}
+
+#welcome .register_form {
+  padding: 10px;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+#welcome .register_form h2 {
+  font-size: 13px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#welcome .register_form .form_row {
+  margin-bottom: 8px;
+}
+
+#welcome .register_form .form_row label {
+  display: block;
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+#welcome .register_form .form_row input[type="text"],
+#welcome .register_form .form_row input[type="email"],
+#welcome .register_form .form_row input[type="password"] {
+  width: 280px;
+  box-sizing: border-box;
+}
+
+#welcome .register_form .form_row button {
+  margin-top: 5px;
+}
+
+#welcome .register_form .checkbox_row {
+  margin: 8px 0;
+  font-size: 11px;
+}
+
+#welcome .register_form .checkbox_row label {
+  font-weight: normal;
+  display: inline;
+  margin-left: 4px;
+}
+
+#welcome .register_form .checkbox_row input[type="checkbox"] {
+  vertical-align: middle;
+}

@@ -1,7 +1,5 @@
+import RegistrationForm from '@/components/RegistrationForm'
+
 export default function Home() {
-  return (
-    <main>
-      <h1>Human-Only Social Network</h1>
-    </main>
-  )
+  return <RegistrationForm />
 }
