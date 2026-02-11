@@ -12,6 +12,7 @@ import "@/styles/profile.css";
 import "@/styles/friends.css";
 import "@/styles/feed.css";
 import "@/styles/photos.css";
+import "@/styles/messages.css";
 import Navigator from "@/components/Navigator";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
