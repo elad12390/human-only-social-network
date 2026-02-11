@@ -133,16 +133,14 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
          <>
            {isOwnProfile && session?.user?.id && (
              <>
-               <StatusUpdateForm
-                 userId={session.user.id}
-                 userName={user.name}
-                 onStatusCreated={() => {}}
-               />
-               <WallPostForm
+                <StatusUpdateForm
+                  userId={session.user.id}
+                  userName={user.name}
+                />
+                <WallPostForm
                  authorId={session.user.id}
                  profileOwnerId={userId}
-                 onPostCreated={() => {}}
-               />
+                />
              </>
            )}
 

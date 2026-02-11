@@ -26,7 +26,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <StatusUpdateForm
         userId={session.user.id}
         userName={session.user.name || 'You'}
-        onStatusCreated={() => {}}
       />
       {unseenPokes.length > 0 && (
         <div style={{ padding: '10px 20px', borderBottom: '1px solid #e9e9e9', background: '#fff9d7' }}>

@@ -6,7 +6,7 @@ import { createWallPost } from '@/lib/actions/wall'
 interface WallPostFormProps {
   authorId: string
   profileOwnerId: string
-  onPostCreated: () => void
+  onPostCreated?: () => void
 }
 
 export default function WallPostForm({
@@ -37,7 +37,8 @@ export default function WallPostForm({
       const result = await createWallPost(authorId, profileOwnerId, content)
       if (result.success) {
         setContent('')
-        onPostCreated()
+        onPostCreated?.()
+        window.location.reload()
       } else {
         setError(result.error || 'Failed to create wall post')
       }
