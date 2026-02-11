@@ -16,7 +16,7 @@ export default function Sidebar() {
           <>
             <SidebarLoginForm />
             <div id="qsearch">
-              <form method="get" action="/search">
+              <form method="get" action="/search.php">
                 <input
                   type="text"
                   name="q"
@@ -36,7 +36,7 @@ export default function Sidebar() {
               <a href="/groups.php">Groups</a>
             </div>
             <div id="qsearch">
-              <form method="get" action="/search">
+              <form method="get" action="/search.php">
                 <input
                   type="text"
                   name="q"
