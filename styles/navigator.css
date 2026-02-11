@@ -1,0 +1,14 @@
+/* Facebook 2007 Navigator Bar */
+#navigator {
+  background: #3b5998;
+  margin: 0 1px 0 0;
+  padding: 9px 0 4px 0;
+  height: 2em;
+}
+#navigator a { color: #fff; text-decoration: none; font-size: 13px; font-weight: bold; padding: 4px 8px; }
+#navigator a:hover { background: #5c75aa; text-decoration: none; }
+#navigator .main_set { float: left; padding-left: 10px; }
+#navigator .secondary_set { float: right; padding-right: 10px; font-size: 11px; font-weight: normal; }
+#navigator .secondary_set a { font-size: 11px; color: #c3cddf; }
+#navigator .secondary_set a:hover { color: #fff; }
+#navigator .nav_count { font-size: 10px; color: #d8dfea; }

@@ -1,0 +1,23 @@
+/* Facebook 2007 Error/Status Messages */
+#error {
+  margin: 0 10px 10px;
+  padding: 10px;
+  border: solid 1px #dd3c10;
+  background: #ffebe8;
+  font-size: 11px;
+}
+.status {
+  margin: 0 10px 10px;
+  padding: 10px;
+  background: #fff9d7;
+  border: solid 1px #e2c822;
+  font-size: 11px;
+}
+.explanation_note {
+  margin: 10px;
+  padding: 10px;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  font-size: 11px;
+  color: #666;
+}

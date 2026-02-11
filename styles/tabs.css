@@ -1,0 +1,28 @@
+/* Facebook 2007 Tabs */
+#tabs {
+  text-align: center;
+  padding: 4px 0;
+  margin: 10px 20px 0;
+  border-bottom: solid 1px #3B5998;
+}
+#tabs a {
+  color: #3b5998;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  text-decoration: none;
+}
+#tabs a:hover { background: #D8DFEA; text-decoration: none; }
+#tabs .activetab a { color: #fff; background: #3B5998; }
+.toggle_tabs {
+  background: #f1f1f1;
+  border: 1px solid #898989;
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.toggle_tabs.selected {
+  background: #6d84b4;
+  border-color: #3b5998;
+  color: #fff;
+}

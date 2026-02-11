@@ -1,0 +1,10 @@
+/* Facebook 2007 Footer */
+#pagefooter {
+  clear: both;
+  height: 50px;
+  padding: 15px 0;
+  text-align: center;
+}
+#pagefooter .copyright { color: #777; font-size: 11px; }
+#pagefooter .footer_links { padding: 5px 0; }
+#pagefooter .footer_links a { color: #3b5998; padding: 0 5px; font-size: 11px; }

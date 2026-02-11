@@ -1,0 +1,27 @@
+/* Facebook 2007 Form Styles */
+.inputtext {
+  border: 1px solid #bdc7d8;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-size: 11px;
+  padding: 3px;
+}
+.inputsubmit {
+  background: #3b5998;
+  color: #fff;
+  border: solid 1px;
+  border-color: #D9DFEA #0e1f5b #0e1f5b #D9DFEA;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-size: 11px;
+  padding: 2px 15px 3px 15px;
+  cursor: pointer;
+}
+.inputsubmit:active {
+  border-color: #0e1f5b #D9DFEA #D9DFEA #0e1f5b;
+}
+.inputcheckbox { vertical-align: middle; margin-right: 4px; }
+label { color: #666; font-weight: bold; }
+.formtable { width: 100%; }
+.formtable td { padding: 4px 0; }
+.formtable .label { width: 120px; text-align: right; padding-right: 10px; }
+.formbuttons { padding: 10px 0; text-align: right; }
+textarea.inputtext { font-family: "lucida grande", tahoma, verdana, arial, sans-serif; font-size: 11px; }

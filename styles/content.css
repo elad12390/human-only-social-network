@@ -1,0 +1,20 @@
+/* Facebook 2007 Content Area */
+#widebar { width: 649px; float: left; }
+#page_body { padding: 0; }
+#content_shadow { padding-right: 1px; }
+#content {
+  border-left: 1px solid #b7b7b7;
+  border-right: 1px solid #b7b7b7;
+  border-bottom: 1px solid #3b5998;
+  min-height: 400px;
+  padding: 0;
+}
+.grayheader {
+  border-bottom: 1px solid #ccc;
+  background: #f7f7f7;
+  padding: 15px 20px 10px;
+}
+.page_title { font-size: 14px; font-weight: bold; color: #333; }
+.title_header { padding: 10px 20px; border-bottom: 1px solid #ddd; }
+.standard_message { padding: 10px 20px; border-bottom: 1px solid #eee; }
+.standard_message .time { color: #999; font-size: 10px; }

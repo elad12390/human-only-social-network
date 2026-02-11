@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@/styles/base.css";
+import "@/styles/forms.css";
+import "@/styles/navigator.css";
+import "@/styles/sidebar.css";
+import "@/styles/footer.css";
+import "@/styles/tabs.css";
+import "@/styles/errors.css";
+import "@/styles/content.css";
 
 export const metadata: Metadata = {
   title: "Human-Only Social Network",
