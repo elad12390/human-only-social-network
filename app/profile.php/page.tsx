@@ -11,6 +11,7 @@ import PokeButton from '@/components/PokeButton'
 import { getWallPosts } from '@/lib/actions/wall'
 import { getLatestStatus } from '@/lib/actions/status'
 import { getFriends, getFriendshipStatus } from '@/lib/actions/friends'
+import { getAlbums } from '@/lib/actions/photos'
 
 interface ProfilePageProps {
   searchParams: Promise<{ id?: string; tab?: string }>
@@ -56,6 +57,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
     const wallPosts = await getWallPosts(userId)
     const latestStatus = await getLatestStatus(userId)
     const friends = await getFriends(userId)
+    const albums = await getAlbums(userId)
 
     const isOwnProfile = session?.user?.id === userId
     const friendshipRecord = session?.user?.id && session.user.id !== userId ? await getFriendshipStatus(session.user.id, userId) : null
@@ -176,9 +178,28 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
          </div>
        )}
 
-       {activeTab === 'photos' && (
-         <div className="standard_message">No photos yet.</div>
-       )}
+        {activeTab === 'photos' && (
+          <div>
+            <a href={`/photos.php?id=${userId}`} style={{ display: 'block', padding: '10px', color: '#3b5998', fontWeight: 'bold' }}>
+              See All Photos
+            </a>
+            {albums.length === 0 ? (
+              <div className="standard_message">No photo albums yet.</div>
+            ) : (
+              <div className="album_list">
+                {albums.map((album) => (
+                  <div key={album.id} className="album_item">
+                    <div className="album_no_cover">No Cover</div>
+                    <a href={`/album.php?id=${album.id}`} className="album_name">
+                      {album.name}
+                    </a>
+                    <div className="album_count">{album.photoCount} photos</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {activeTab === 'friends' && (
           <div>
