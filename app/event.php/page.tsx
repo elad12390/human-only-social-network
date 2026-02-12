@@ -43,6 +43,11 @@ export default async function EventPage({ searchParams }: EventPageProps) {
 
   return (
     <div id="content">
+      <div style={{ padding: '10px 20px' }}>
+        <a href="/events.php" style={{ color: '#3b5998', fontSize: '11px' }}>
+          &laquo; Back to Events
+        </a>
+      </div>
       <div className="event_info">
         <div className="event_title">{event.name}</div>
         {event.description && (
@@ -53,12 +58,12 @@ export default async function EventPage({ searchParams }: EventPageProps) {
         )}
         {event.startTime && (
           <div className="event_time">
-            Start: {event.startTime.toLocaleDateString()}
+            Start: {event.startTime.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {event.startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
           </div>
         )}
         {event.endTime && (
           <div className="event_time">
-            End: {event.endTime.toLocaleDateString()}
+            End: {event.endTime.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {event.endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
+import { getFriends } from '@/lib/actions/friends'
 import ComposeMessageForm from '@/components/ComposeMessageForm'
 
 interface ComposePageProps {
@@ -17,6 +18,8 @@ export default async function ComposePage({ searchParams }: ComposePageProps) {
     redirect('/')
   }
 
+  const friends = await getFriends(session.user.id)
+
   return (
     <div id="content">
       <div className="grayheader">Compose Message</div>
@@ -27,6 +30,7 @@ export default async function ComposePage({ searchParams }: ComposePageProps) {
         currentUserId={session.user.id}
         prefillRecipientId={params.to}
         prefillSubject={params.subject}
+        friends={friends}
       />
     </div>
   )

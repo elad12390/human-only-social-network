@@ -7,7 +7,7 @@ import { like, and, not, eq } from 'drizzle-orm'
 export async function searchUsers(
   query: string,
   currentUserId?: string
-): Promise<Array<{ id: string; name: string; email: string }>> {
+): Promise<Array<{ id: string; name: string; email: string; image: string | null }>> {
   if (!query || query.trim().length === 0) {
     return []
   }
@@ -20,14 +20,15 @@ export async function searchUsers(
       : like(schema.user.name, pattern)
 
     const results = await db
-      .select({
+      .selectDistinct({
         id: schema.user.id,
         name: schema.user.name,
         email: schema.user.email,
+        image: schema.user.image,
       })
       .from(schema.user)
       .where(whereClause)
-      .limit(50)
+      .limit(20)
 
     return results
   } catch (error) {

@@ -18,7 +18,12 @@ export default async function FriendRequestsPage() {
     <div id="content">
       <div className="grayheader">Friend Requests</div>
       {requests.length === 0 ? (
-        <div className="standard_message">You have no pending friend requests.</div>
+        <div className="standard_message">
+          You have no pending friend requests.
+          <div style={{ marginTop: '8px' }}>
+            <a href="/search.php" style={{ color: '#3b5998' }}>Search for people</a> to connect with friends on HumanBook.
+          </div>
+        </div>
       ) : (
         <div>
           {requests.map((request) => (

@@ -29,8 +29,13 @@ export default function Sidebar() {
         ) : (
           <>
             <div style={{ padding: '5px 0' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#666', textTransform: 'uppercase', marginBottom: '3px' }}>Navigation</div>
               <a href="/home.php">News Feed</a>
-              <a href="/messages.php">Messages</a>
+              <a href="/inbox">Messages</a>
+              <a href="/reqs.php">Friend Requests</a>
+            </div>
+            <div style={{ padding: '5px 0', borderTop: '1px solid #ddd', marginTop: '5px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#666', textTransform: 'uppercase', marginBottom: '3px' }}>Explore</div>
               <a href="/events.php">Events</a>
               <a href="/photos.php">Photos</a>
               <a href="/groups.php">Groups</a>

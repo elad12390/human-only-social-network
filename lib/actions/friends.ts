@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 import * as schema from '@/lib/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, sql } from 'drizzle-orm'
 
 export async function sendFriendRequest(
   requesterId: string,
@@ -240,5 +240,23 @@ export async function getFriendshipStatus(userId1: string, userId2: string) {
     return friendships.length > 0 ? friendships[0] : null
   } catch (error) {
     return null
+  }
+}
+
+export async function getSuggestedFriends(userId: string, limit: number = 5) {
+  try {
+    const allUsers = await db.select({ id: schema.user.id, name: schema.user.name, image: schema.user.image })
+      .from(schema.user)
+      .where(sql`${schema.user.id} != ${userId}`)
+      .limit(limit + 10)
+
+    const friends = await getFriends(userId)
+    const friendIds = new Set(friends.map(f => f.friendId))
+
+    return allUsers
+      .filter(u => !friendIds.has(u.id))
+      .slice(0, limit)
+  } catch (error) {
+    return []
   }
 }

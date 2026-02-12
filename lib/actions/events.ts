@@ -77,6 +77,7 @@ export async function getEvents(): Promise<
       })
       .from(schema.event)
       .orderBy(desc(schema.event.createdAt))
+      .limit(20)
 
     return events
   } catch (error) {

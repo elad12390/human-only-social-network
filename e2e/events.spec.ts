@@ -51,9 +51,10 @@ test.describe.serial('Events', () => {
     await page.locator('a.event_name', { hasText: eventName }).click()
     await page.waitForLoadState('domcontentloaded')
 
-    await page.getByRole('button', { name: 'Attending' }).click()
-    await page.waitForTimeout(2000)
-    await page.reload()
+    await Promise.all([
+      page.waitForEvent('load', { timeout: 15000 }),
+      page.getByRole('button', { name: 'Attending' }).click(),
+    ])
     await page.waitForLoadState('domcontentloaded')
 
     await expect(page.locator('.rsvp_status')).toContainText('attending', { timeout: 15000 })
@@ -67,9 +68,10 @@ test.describe.serial('Events', () => {
     await page.locator('a.event_name', { hasText: eventName }).click()
     await page.waitForLoadState('domcontentloaded')
 
-    await page.getByRole('button', { name: 'Maybe' }).click()
-    await page.waitForTimeout(2000)
-    await page.reload()
+    await Promise.all([
+      page.waitForEvent('load', { timeout: 15000 }),
+      page.getByRole('button', { name: 'Maybe' }).click(),
+    ])
     await page.waitForLoadState('domcontentloaded')
 
     await expect(page.locator('.rsvp_status')).toContainText('maybe', { timeout: 15000 })
@@ -87,12 +89,13 @@ test.describe.serial('Events', () => {
     await guestPage.locator('a.event_name', { hasText: eventName }).click()
     await guestPage.waitForLoadState('domcontentloaded')
 
-    await guestPage.getByRole('button', { name: 'Attending' }).click()
-    await guestPage.waitForTimeout(2000)
-    await guestPage.reload()
+    await Promise.all([
+      guestPage.waitForEvent('load', { timeout: 15000 }),
+      guestPage.getByRole('button', { name: 'Attending' }).click(),
+    ])
     await guestPage.waitForLoadState('domcontentloaded')
 
-    await expect(guestPage.locator('.guest_section').first()).toContainText('EventGuest User', { timeout: 15000 })
+    await expect(guestPage.locator('.event_guest_list')).toContainText('EventGuest User', { timeout: 15000 })
     await guestPage.close()
   })
 })

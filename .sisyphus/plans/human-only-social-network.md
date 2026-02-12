@@ -39,11 +39,11 @@ Build a fully functional social network with Facebook 2007's exact visual design
 - Deployable to Vercel
 
 ### Definition of Done
-- [ ] All 10 features functional and visually matching 2007 Facebook
-- [ ] TDD: All business logic has passing tests
-- [ ] `npm run build` succeeds with zero errors
-- [ ] App runs locally with `npm run dev`
-- [ ] Database schema covers all features
+- [x] All 10 features functional and visually matching 2007 Facebook
+- [x] TDD: All business logic has passing tests
+- [x] `npm run build` succeeds with zero errors
+- [x] App runs locally with `npm run dev`
+- [x] Database schema covers all features
 
 ### Must Have
 - Fixed 799px width layout matching original Facebook CSS
@@ -581,7 +581,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 8. Status Updates
+- [x] 8. Status Updates
 
   **What to do**:
   - Add status update feature: "[Name] is ___"
@@ -621,7 +621,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 9. Friend System
+- [x] 9. Friend System
 
   **What to do**:
   - Friend request flow: Send Request → Pending → Accept/Decline
@@ -672,7 +672,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 10. News Feed
+- [x] 10. News Feed
 
   **What to do**:
   - Create News Feed page at `/home.php` (the logged-in homepage)
@@ -718,7 +718,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 11. Poke
+- [x] 11. Poke
 
   **What to do**:
   - Add "Poke" button on friend profiles
@@ -756,7 +756,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 12. Photos & Albums
+- [x] 12. Photos & Albums
 
   **What to do**:
   - Photo album system:
@@ -807,7 +807,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 13. Messages / Inbox
+- [x] 13. Messages / Inbox
 
   **What to do**:
   - Inbox page at `/inbox` (matches 2007 Facebook's unified inbox)
@@ -857,7 +857,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 14. Groups
+- [x] 14. Groups
 
   **What to do**:
   - Groups feature:
@@ -903,7 +903,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 15. Events
+- [x] 15. Events
 
   **What to do**:
   - Events feature:
@@ -947,7 +947,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 16. Notifications & Navigator Counts
+- [x] 16. Notifications & Navigator Counts
 
   **What to do**:
   - Wire up notification counts in the navigator bar
@@ -985,7 +985,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 17. User Search
+- [x] 17. User Search
 
   **What to do**:
   - Search bar in the sidebar (matching 2007 Facebook's search position)
@@ -1025,7 +1025,7 @@ Task 0 (Project Setup)
 
 ---
 
-- [ ] 18. Seed Data & Final Polish
+- [x] 18. Seed Data & Final Polish
 
   **What to do**:
   - Create `scripts/seed.ts` — database seeding script for development
@@ -1110,13 +1110,13 @@ npm run seed         # Expected: populates DB with test data
 ```
 
 ### Final Checklist
-- [ ] All "Must Have" features present and functional
-- [ ] All "Must NOT Have" items absent (no Tailwind, no rounded corners, no modern UX, etc.)
-- [ ] All vitest tests pass
-- [ ] Visual match: 2007 Facebook blue (#3B5998), 11px Lucida Grande, 799px fixed width, float-based layout
-- [ ] Auth works: register, login, logout, session persistence
-- [ ] Social graph: friends, wall posts, status updates, news feed
-- [ ] Media: photo albums, upload, tagging
-- [ ] Communication: messages, poke
-- [ ] Community: groups, events
-- [ ] "I am human" checkbox enforced at registration
+- [x] All "Must Have" features present and functional
+- [x] All "Must NOT Have" items absent (no Tailwind, no rounded corners, no modern UX, etc.)
+- [x] All vitest tests pass
+- [x] Visual match: 2007 Facebook blue (#3B5998), 11px Lucida Grande, 799px fixed width, float-based layout
+- [x] Auth works: register, login, logout, session persistence
+- [x] Social graph: friends, wall posts, status updates, news feed
+- [x] Media: photo albums, upload, tagging
+- [x] Communication: messages, poke
+- [x] Community: groups, events
+- [x] "I am human" checkbox enforced at registration

@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth'
 import StatusUpdateForm from '@/components/StatusUpdateForm'
 import { getFeedItems, getFeedItemCount } from '@/lib/actions/feed'
 import { getUnseenPokes } from '@/lib/actions/poke'
+import { getSuggestedFriends } from '@/lib/actions/friends'
 import PokeBackButton from '@/components/PokeBackButton'
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
@@ -20,6 +21,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const totalCount = await getFeedItemCount(session.user.id)
   const totalPages = Math.ceil(totalCount / 20) || 1
   const unseenPokes = await getUnseenPokes(session.user.id)
+  const suggestions = await getSuggestedFriends(session.user.id, 5)
 
   return (
     <div id="content">
@@ -27,6 +29,16 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         userId={session.user.id}
         userName={session.user.name || 'You'}
       />
+      {suggestions.length > 0 && (
+        <div style={{ padding: '10px 20px', borderBottom: '1px solid #e9e9e9', background: '#f7f7f7' }}>
+          <div style={{ fontWeight: 'bold', fontSize: '11px', marginBottom: '6px' }}>People You May Know</div>
+          {suggestions.map((s) => (
+            <div key={s.id} style={{ display: 'inline-block', marginRight: '12px', textAlign: 'center', fontSize: '10px' }}>
+              <a href={`/profile.php?id=${s.id}`} style={{ color: '#3b5998' }}>{s.name}</a>
+            </div>
+          ))}
+        </div>
+      )}
       {unseenPokes.length > 0 && (
         <div style={{ padding: '10px 20px', borderBottom: '1px solid #e9e9e9', background: '#fff9d7' }}>
           {unseenPokes.map((poke) => (

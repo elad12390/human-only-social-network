@@ -111,6 +111,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 profileUserName={user.name}
               />
             )}
+            <a href={`/inbox/compose?to=${userId}`} style={{ marginLeft: '8px', color: '#3b5998', fontSize: '11px' }}>Send Message</a>
           </div>
         )}
 
@@ -187,11 +188,15 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
               <div className="album_list">
                 {albums.map((album) => (
                   <div key={album.id} className="album_item">
-                    <div className="album_no_cover">No Cover</div>
+                    {album.coverUrl ? (
+                      <img src={album.coverUrl} alt={album.name} style={{ width: '150px', height: '150px', objectFit: 'cover', border: '1px solid #ccc' }} />
+                    ) : (
+                      <div className="album_no_cover">No Cover</div>
+                    )}
                     <a href={`/album.php?id=${album.id}`} className="album_name">
                       {album.name}
                     </a>
-                    <div className="album_count">{album.photoCount} photos</div>
+                    <div className="album_count">{album.photoCount} {album.photoCount === 1 ? 'photo' : 'photos'}</div>
                   </div>
                 ))}
               </div>

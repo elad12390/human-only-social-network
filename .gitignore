@@ -43,6 +43,9 @@ local.db
 local.db-shm
 local.db-wal
 
+# uploads (local dev)
+/public/uploads/
+
 # playwright
 /test-results/
 /playwright-report/

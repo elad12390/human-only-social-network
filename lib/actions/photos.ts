@@ -43,6 +43,7 @@ export async function getAlbums(
     description: string | null
     createdAt: Date | null
     photoCount: number
+    coverUrl: string | null
   }>
 > {
   try {
@@ -57,7 +58,6 @@ export async function getAlbums(
       .where(eq(schema.photoAlbum.userId, userId))
       .orderBy(desc(schema.photoAlbum.createdAt))
 
-    // Get photo counts for each album
     const albumsWithCounts = await Promise.all(
       albums.map(async (album) => {
         const photoCountResult = await db
@@ -65,9 +65,16 @@ export async function getAlbums(
           .from(schema.photo)
           .where(eq(schema.photo.albumId, album.id))
 
+        const firstPhoto = await db
+          .select({ blobUrl: schema.photo.blobUrl })
+          .from(schema.photo)
+          .where(eq(schema.photo.albumId, album.id))
+          .limit(1)
+
         return {
           ...album,
           photoCount: photoCountResult[0]?.count || 0,
+          coverUrl: firstPhoto[0]?.blobUrl || null,
         }
       })
     )

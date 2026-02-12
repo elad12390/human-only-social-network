@@ -36,6 +36,13 @@ export default async function SearchPage({
                 fontFamily: '"lucida grande", tahoma, verdana, arial, sans-serif',
               }}
             >
+              <div style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }}>
+                {user.image ? (
+                  <img src={user.image} alt="" style={{ width: '30px', height: '30px', border: '1px solid #ccc' }} />
+                ) : (
+                  <div style={{ width: '30px', height: '30px', background: '#f0f0f0', border: '1px solid #ccc', display: 'inline-block' }} />
+                )}
+              </div>
               <a
                 href={`/profile.php?id=${user.id}`}
                 style={{ fontWeight: 'bold', color: '#3b5998', fontSize: '12px' }}

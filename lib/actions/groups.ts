@@ -68,6 +68,7 @@ export async function getGroups(): Promise<
       })
       .from(schema.group)
       .orderBy(desc(schema.group.createdAt))
+      .limit(20)
 
     return groups
   } catch (error) {

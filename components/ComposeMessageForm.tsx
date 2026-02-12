@@ -7,12 +7,14 @@ interface ComposeMessageFormProps {
   currentUserId: string
   prefillRecipientId?: string
   prefillSubject?: string
+  friends: Array<{ id: string; friendId: string; friendName: string | null }>
 }
 
 export default function ComposeMessageForm({
   currentUserId,
   prefillRecipientId = '',
   prefillSubject = '',
+  friends,
 }: ComposeMessageFormProps) {
   const [recipientId, setRecipientId] = useState(prefillRecipientId)
   const [subject, setSubject] = useState(prefillSubject)
@@ -25,7 +27,7 @@ export default function ComposeMessageForm({
     setError('')
 
     if (!recipientId.trim()) {
-      setError('Please enter a recipient user ID')
+      setError('Please select a recipient')
       return
     }
 
@@ -63,15 +65,19 @@ export default function ComposeMessageForm({
     <div className="compose_form">
       <form onSubmit={handleSubmit}>
         <div className="form_row">
-          <label>Recipient User ID</label>
-          <input
-            type="text"
+          <label>To</label>
+          <select
             className="inputtext"
-            placeholder="Recipient User ID"
             value={recipientId}
             onChange={(e) => setRecipientId(e.target.value)}
             disabled={loading}
-          />
+            style={{ width: '100%' }}
+          >
+            <option value="">Select a friend...</option>
+            {friends.map((f) => (
+              <option key={f.friendId} value={f.friendId}>{f.friendName}</option>
+            ))}
+          </select>
         </div>
 
         <div className="form_row">

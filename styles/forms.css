@@ -1,19 +1,51 @@
 /* Facebook 2007 Form Styles */
+.create_form {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  margin: 10px 20px;
+}
+.create_form h3, .grayheader {
+  background: #f0f0f0;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+.form_row {
+  padding: 8px 0;
+}
+.form_row label {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 3px;
+}
 .inputtext {
   border: 1px solid #bdc7d8;
+  padding: 3px 5px;
   font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   font-size: 11px;
-  padding: 3px;
+  color: #333;
+}
+.inputtext:focus {
+  border-color: #3b5998;
+  outline: none;
 }
 .inputsubmit {
-  background: #3b5998;
+  background: #5b74a8;
+  border: 1px solid #29447e;
   color: #fff;
-  border: solid 1px;
-  border-color: #D9DFEA #0e1f5b #0e1f5b #D9DFEA;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   font-size: 11px;
-  padding: 2px 15px 3px 15px;
+  font-weight: bold;
+  padding: 3px 10px;
   cursor: pointer;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+.inputsubmit:hover {
+  background: #4a6595;
 }
 .inputsubmit:active {
   border-color: #0e1f5b #D9DFEA #D9DFEA #0e1f5b;
@@ -24,4 +56,30 @@ label { color: #666; font-weight: bold; }
 .formtable td { padding: 4px 0; }
 .formtable .label { width: 120px; text-align: right; padding-right: 10px; }
 .formbuttons { padding: 10px 0; text-align: right; }
-textarea.inputtext { font-family: "lucida grande", tahoma, verdana, arial, sans-serif; font-size: 11px; }
+textarea.inputtext {
+  resize: vertical;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-size: 11px;
+}
+.inputfile {
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-size: 11px;
+  color: #333;
+  padding: 2px 0;
+}
+.form_error {
+  color: #d00;
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+.upload_preview {
+  padding: 8px 0;
+}
+.upload_preview img {
+  max-width: 200px;
+  max-height: 150px;
+  border: 1px solid #bdc7d8;
+  object-fit: cover;
+}

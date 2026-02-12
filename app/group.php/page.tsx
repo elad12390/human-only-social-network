@@ -99,7 +99,14 @@ export default async function GroupPage({ searchParams }: GroupPageProps) {
         {members.map((member) => (
           <span key={member.id} className="member_item">
             <a href={`/profile.php?id=${member.userId}`}>{member.userName}</a>
-            <span className="member_role">({member.role})</span>
+            <span className="member_role" style={{
+              fontSize: '9px',
+              color: '#fff',
+              background: member.role === 'admin' ? '#3b5998' : '#999',
+              padding: '1px 4px',
+              borderRadius: '2px',
+              marginLeft: '3px',
+            }}>{member.role}</span>
           </span>
         ))}
       </div>

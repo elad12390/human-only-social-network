@@ -463,3 +463,154 @@ Tables grouped into logical domains:
 - Task 8: Build friend request system
 - Task 9: Implement wall post comments (if needed for 2007 feature set)
 - Task 10: Create news feed with status updates
+
+## 2026-02-11 Task 8: Status Updates (2007 Facebook Style) Complete
+
+### Files Created
+- `lib/actions/status.ts` - Server actions for status creation and retrieval
+- `components/StatusUpdateForm.tsx` - Client component for status input form
+- `__tests__/status.test.ts` - Comprehensive test suite for status functionality
+
+### Files Modified
+- `app/profile.php/page.tsx` - Added status display and form on profile
+- `app/home.php/page.tsx` - Added status form at top of home page
+
+### Key Implementation Details
+
+1. **Server Actions (lib/actions/status.ts)**
+   - `createStatusUpdate(userId, content)` validates and creates status
+   - Max 255 character limit enforced
+   - Empty content rejected
+   - Creates both statusUpdate and feedItem records
+   - `getLatestStatus(userId)` returns most recent status ordered by createdAt DESC
+   - Previous statuses preserved (not deleted)
+
+2. **StatusUpdateForm Component**
+   - Client component ('use client') with form state management
+   - Shows "[User Name] is" as non-editable prefix
+   - Text input (not textarea) for status completion
+   - Character counter (max 255)
+   - "Update" button disabled when empty or loading
+   - Error display for validation failures
+   - On success: calls window.location.reload() to refresh page
+   - Loading state prevents double-submit
+
+3. **Profile Page Integration**
+   - Fetches latest status with getLatestStatus()
+   - Displays status below user name in italic: "is [status text]"
+   - Shows StatusUpdateForm only on own profile (before WallPostForm)
+   - Status appears even if no wall posts exist
+
+4. **Home Page Integration**
+   - Requires authentication (redirects to / if not logged in)
+   - StatusUpdateForm at top of page
+   - Placeholder message below for future news feed
+
+5. **Test Coverage**
+   - Status creation and retrieval
+   - 255 character limit enforcement
+   - Empty content rejection
+   - Latest status retrieval (ordered correctly)
+   - Previous statuses preservation
+   - Feed item creation alongside status
+
+### Key Learnings
+
+1. **Status Format is Forced Third-Person**
+   - Form shows "[Name] is" prefix (non-editable)
+   - User only types the completion (e.g., "having a great day")
+   - Display shows full format: "John is having a great day"
+
+2. **Feed Items Created Alongside Content**
+   - Pattern from wall.ts: create content item, then create feedItem
+   - feedItem.type = 'status_update'
+   - feedItem.referenceId = status ID
+   - Enables future news feed aggregation
+
+3. **Page Reload for State Refresh**
+   - StatusUpdateForm calls window.location.reload() on success
+   - Simpler than complex state management for this feature
+   - Matches 2007 Facebook behavior (page refresh after status update)
+
+4. **Character Limit Validation**
+   - 255 character limit (not 5000 like wall posts)
+   - Enforced both client-side (maxLength) and server-side
+   - Character counter shows current/max
+
+5. **Authentication on Home Page**
+   - Home page now requires authentication
+   - Redirects to / if not logged in
+   - Uses session from Better Auth
+
+### Verification Results
+✓ All 22 tests passing (6 new status tests)
+✓ npm run build succeeds with no TypeScript errors
+✓ npx tsc --noEmit: No diagnostics
+✓ Commit created: "feat: add \"Name is...\" status updates in 2007 Facebook style"
+✓ Routes: / (static), /home.php (dynamic), /profile.php (dynamic), /api/auth/[...all] (dynamic)
+
+### Next Steps
+- Task 9: Build friend request system
+- Task 10: Create news feed with status updates
+- Task 11: Implement wall post comments (if needed)
+
+## 2026-02-12 Task 9: Friend System Server Actions Complete
+
+### Files Created
+- `lib/actions/friends.ts` - Server actions for friend system
+- `__tests__/friends.test.ts` - Comprehensive test suite for friend operations
+
+### Key Implementation Details
+
+1. **Server Actions (lib/actions/friends.ts)**
+   - `sendFriendRequest(requesterId, addresseeId)` - Creates pending friendship, creates notification
+   - `acceptFriendRequest(friendshipId, userId)` - Updates status to 'accepted', creates feed item
+   - `declineFriendRequest(friendshipId, userId)` - Updates status to 'declined'
+   - `unfriend(friendshipId, userId)` - Deletes friendship record
+   - `getFriends(userId)` - Returns accepted friendships with user info (bidirectional)
+   - `getPendingRequests(userId)` - Returns pending requests where user is addressee
+   - `getFriendshipStatus(userId1, userId2)` - Returns friendship record or null
+
+2. **Test Coverage (19 tests)**
+   - Friendship creation and status transitions
+   - Notification creation on friend request
+   - Feed item creation on acceptance
+   - Bidirectional friendship queries
+   - Pending request filtering
+   - Empty state handling
+
+### Key Learnings
+
+1. **Drizzle ORM Join Syntax**
+   - Join callback receives selected columns, not full table
+   - Must use `schema.table.column` references inside join condition
+   - Arrow function with no parameters: `() => condition`
+   - Cannot use destructured parameters in join callback
+
+2. **Bidirectional Friendship Queries**
+   - Friendships are directional (requester → addressee)
+   - getFriends must check both directions: requester=userId OR addressee=userId
+   - Use OR logic in join condition to handle both cases
+
+3. **Test Database Setup**
+   - Use `sqlite.exec()` with raw SQL for table creation
+   - Use `.run()` on insert/update/delete operations
+   - Use `.all()` on select operations to get array results
+   - Foreign key constraints must be explicitly enabled
+
+4. **Server Action Patterns**
+   - Return `{ success: boolean; error?: string }` for validation errors
+   - Return `{ success: boolean; friendshipId?: string }` for creation operations
+   - Validate business logic (can't friend self, no duplicates) before DB operations
+   - Create related records (notifications, feed items) in same transaction
+
+### Verification Results
+✓ All 41 tests passing (19 new friend tests)
+✓ npm run build succeeds with no TypeScript errors
+✓ npx tsc --noEmit: No diagnostics
+✓ Commit created: "feat: add friend system with server actions and tests"
+
+### Next Steps
+- Task 10: Build friend request UI components
+- Task 11: Create friends list page
+- Task 12: Implement news feed with friend activity
