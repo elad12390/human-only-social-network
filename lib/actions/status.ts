@@ -19,15 +19,15 @@ export async function createStatusUpdate(
   try {
     const sanitizedContent = content.trim()
 
-    const statusUpdate = await db.insert(schema.statusUpdate).values({
+    const [inserted] = await db.insert(schema.statusUpdate).values({
       userId,
       content: sanitizedContent,
-    })
+    }).returning({ id: schema.statusUpdate.id })
 
     await db.insert(schema.feedItem).values({
       userId,
       type: 'status_update',
-      referenceId: statusUpdate.lastInsertRowid?.toString() || '',
+      referenceId: inserted.id,
     })
 
     return { success: true }

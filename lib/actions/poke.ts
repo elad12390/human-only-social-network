@@ -54,14 +54,13 @@ export async function sendPoke(
       return { success: false, error: 'You already poked this person' }
     }
 
-    // Create poke record
-    const result = await db.insert(schema.poke).values({
+    const [inserted] = await db.insert(schema.poke).values({
       pokerId,
       pokedId,
       seen: false,
-    })
+    }).returning({ id: schema.poke.id })
 
-    const pokeId = result.lastInsertRowid?.toString() || ''
+    const pokeId = inserted.id
 
     // Create notification for pokedId
     await db.insert(schema.notification).values({

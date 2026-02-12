@@ -40,7 +40,7 @@ test.describe('Status Updates', () => {
     await page.waitForLoadState('networkidle')
 
     await page.goto('/profile.php')
-    await expect(page.locator('.profile_status')).toContainText('coding all night')
+    await expect(page.locator('.profile_status').first()).toContainText('coding all night')
   })
 
   test('shows character count', async ({ page }) => {

@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 import * as schema from '@/lib/schema'
-import { eq, and, or, inArray } from 'drizzle-orm'
+import { eq, and, or, inArray, desc } from 'drizzle-orm'
 
 export interface FeedItemResult {
   id: string
@@ -14,32 +14,33 @@ export interface FeedItemResult {
   createdAt: Date | null
 }
 
+async function getFriendIds(userId: string): Promise<string[]> {
+  const friendships = await db
+    .select({
+      friendId: schema.user.id,
+    })
+    .from(schema.friendship)
+    .innerJoin(
+      schema.user,
+      or(
+        and(eq(schema.friendship.requesterId, userId), eq(schema.friendship.addresseeId, schema.user.id)),
+        and(eq(schema.friendship.addresseeId, userId), eq(schema.friendship.requesterId, schema.user.id))
+      )!
+    )
+    .where(eq(schema.friendship.status, 'accepted'))
+
+  return friendships.map((f) => f.friendId)
+}
+
 export async function getFeedItems(
   userId: string,
   page: number = 1,
   pageSize: number = 20
 ): Promise<FeedItemResult[]> {
   try {
-    // Get user's friend IDs (accepted friendships)
-    const friendships = await db
-      .select({
-        friendId: schema.user.id,
-      })
-      .from(schema.friendship)
-      .innerJoin(
-        schema.user,
-        () =>
-          (eq(schema.friendship.requesterId, userId) && eq(schema.friendship.addresseeId, schema.user.id)) ||
-          (eq(schema.friendship.addresseeId, userId) && eq(schema.friendship.requesterId, schema.user.id))
-      )
-      .where(eq(schema.friendship.status, 'accepted'))
-
-    const friendIds = friendships.map((f) => f.friendId)
-
-    // Include user's own ID in the list
+    const friendIds = await getFriendIds(userId)
     const relevantUserIds = [userId, ...friendIds]
 
-    // Query feed items with pagination
     const offset = (page - 1) * pageSize
     const feedItems = await db
       .select({
@@ -53,11 +54,10 @@ export async function getFeedItems(
       .from(schema.feedItem)
       .innerJoin(schema.user, eq(schema.feedItem.userId, schema.user.id))
       .where(inArray(schema.feedItem.userId, relevantUserIds))
-      .orderBy((t) => t.createdAt)
+      .orderBy(desc(schema.feedItem.createdAt))
       .limit(pageSize)
       .offset(offset)
 
-    // Enrich each feed item based on type
     const enrichedItems: FeedItemResult[] = []
 
     for (const item of feedItems) {
@@ -65,7 +65,6 @@ export async function getFeedItems(
       let targetUserName: string | null = null
 
       if (item.type === 'status_update' && item.referenceId) {
-        // Query status update content
         const statusUpdates = await db
           .select()
           .from(schema.statusUpdate)
@@ -75,7 +74,6 @@ export async function getFeedItems(
           content = statusUpdates[0].content
         }
       } else if (item.type === 'wall_post' && item.referenceId) {
-        // Query wall post content and profile owner
         const wallPosts = await db
           .select({
             content: schema.wallPost.content,
@@ -87,7 +85,6 @@ export async function getFeedItems(
         if (wallPosts.length > 0) {
           content = wallPosts[0].content
 
-          // Get profile owner name
           const owners = await db
             .select({ name: schema.user.name })
             .from(schema.user)
@@ -98,7 +95,6 @@ export async function getFeedItems(
           }
         }
       } else if (item.type === 'friend_accepted' && item.referenceId) {
-        // Query friendship to get both user names
         const friendshipRecords = await db
           .select({
             requesterId: schema.friendship.requesterId,
@@ -109,7 +105,6 @@ export async function getFeedItems(
 
         if (friendshipRecords.length > 0) {
           const friendship = friendshipRecords[0]
-          // Get the other user's name (not the feed item creator)
           const otherId = friendship.requesterId === item.userId ? friendship.addresseeId : friendship.requesterId
 
           const otherUsers = await db
@@ -142,26 +137,9 @@ export async function getFeedItems(
 
 export async function getFeedItemCount(userId: string): Promise<number> {
   try {
-    // Get user's friend IDs (accepted friendships)
-    const friendships = await db
-      .select({
-        friendId: schema.user.id,
-      })
-      .from(schema.friendship)
-      .innerJoin(
-        schema.user,
-        () =>
-          (eq(schema.friendship.requesterId, userId) && eq(schema.friendship.addresseeId, schema.user.id)) ||
-          (eq(schema.friendship.addresseeId, userId) && eq(schema.friendship.requesterId, schema.user.id))
-      )
-      .where(eq(schema.friendship.status, 'accepted'))
-
-    const friendIds = friendships.map((f) => f.friendId)
-
-    // Include user's own ID in the list
+    const friendIds = await getFriendIds(userId)
     const relevantUserIds = [userId, ...friendIds]
 
-    // Count feed items
     const result = await db
       .select({ count: schema.feedItem.id })
       .from(schema.feedItem)

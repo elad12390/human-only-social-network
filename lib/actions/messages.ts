@@ -26,15 +26,14 @@ export async function sendMessage(
   }
 
   try {
-    // Insert message
-    const messageResult = await db.insert(schema.message).values({
+    const [inserted] = await db.insert(schema.message).values({
       senderId,
       recipientId,
       subject: subject.trim(),
       body: body.trim(),
-    })
+    }).returning({ id: schema.message.id })
 
-    const messageId = messageResult.lastInsertRowid?.toString() || ''
+    const messageId = inserted.id
 
     // Create notification
     await db.insert(schema.notification).values({

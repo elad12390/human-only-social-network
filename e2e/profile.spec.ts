@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { registerUser, logoutUser, loginUser } from './helpers/test-utils'
+import { registerUser, logoutUser, loginUser, pageContent } from './helpers/test-utils'
 
 test.describe('Profile & Wall', () => {
   let userEmail: string
@@ -54,9 +54,9 @@ test.describe('Profile & Wall', () => {
     await page.goto('/profile.php')
 
     await page.locator('#tabs a', { hasText: 'Info' }).click()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
-    await expect(page.locator('#content')).toContainText('Member since')
+    await expect(pageContent(page)).toContainText('Member since')
   })
 
   test('friends tab shows friend count', async ({ page }) => {
@@ -64,7 +64,7 @@ test.describe('Profile & Wall', () => {
     await page.goto('/profile.php')
 
     await page.locator('#tabs a', { hasText: 'Friends' }).click()
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
     await expect(page.locator('.friend_count')).toContainText('Friends (')
   })

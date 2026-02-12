@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { registerAndGetId, logoutUser, loginUser } from './helpers/test-utils'
+import { registerAndGetId, logoutUser, loginUser, pageContent } from './helpers/test-utils'
 
 test.describe('Friend System', () => {
   let userA: { email: string; password: string; userId: string; fullName: string }
@@ -21,11 +21,12 @@ test.describe('Friend System', () => {
     await loginUser(page, userA.email, userA.password)
     await page.goto(`/profile.php?id=${userB.userId}`)
 
-    await expect(page.locator('.friend_button')).toContainText(`Add ${userB.fullName} as a Friend`)
-    await page.getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
+    const friendBtn = page.locator('.friend_button')
+    await expect(friendBtn).toContainText(`Add ${userB.fullName} as a Friend`)
+    await friendBtn.getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
 
     await page.waitForLoadState('networkidle')
-    await expect(page.locator('.friend_button')).toContainText('Friend Request Sent')
+    await expect(friendBtn).toContainText('Friend Request Sent')
   })
 
   test('other user sees pending request and can accept', async ({ page }) => {
@@ -37,23 +38,25 @@ test.describe('Friend System', () => {
     await page.getByRole('button', { name: 'Confirm' }).first().click()
     await page.waitForLoadState('networkidle')
 
-    await expect(page.locator('#content')).toContainText('no pending friend requests')
+    await expect(pageContent(page)).toContainText('no pending friend requests')
   })
 
   test('friendship is shown on profile after acceptance', async ({ page }) => {
     await loginUser(page, userA.email, userA.password)
     await page.goto(`/profile.php?id=${userB.userId}`)
 
-    await expect(page.locator('.friend_button')).toContainText(`You are friends with ${userB.fullName}`)
+    const friendBtn = page.locator('.friend_button')
+    await expect(friendBtn).toContainText(`You are friends with ${userB.fullName}`)
   })
 
   test('can unfriend', async ({ page }) => {
     await loginUser(page, userA.email, userA.password)
     await page.goto(`/profile.php?id=${userB.userId}`)
 
-    await page.getByText('Remove from Friends').click()
+    const friendBtn = page.locator('.friend_button')
+    await friendBtn.getByText('Remove from Friends').click()
     await page.waitForLoadState('networkidle')
 
-    await expect(page.locator('.friend_button')).toContainText(`Add ${userB.fullName} as a Friend`)
+    await expect(friendBtn).toContainText(`Add ${userB.fullName} as a Friend`)
   })
 })

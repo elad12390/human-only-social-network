@@ -20,16 +20,16 @@ export async function createWallPost(
   try {
     const sanitizedContent = content.trim()
 
-    const wallPost = await db.insert(schema.wallPost).values({
+    const [inserted] = await db.insert(schema.wallPost).values({
       authorId,
       profileOwnerId,
       content: sanitizedContent,
-    })
+    }).returning({ id: schema.wallPost.id })
 
     await db.insert(schema.feedItem).values({
       userId: profileOwnerId,
       type: 'wall_post',
-      referenceId: wallPost.lastInsertRowid?.toString() || '',
+      referenceId: inserted.id,
     })
 
     return { success: true }

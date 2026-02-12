@@ -95,7 +95,7 @@ test.describe('Login and Logout', () => {
     await logoutUser(page)
 
     await page.goto('/home.php')
-    await page.waitForURL('**/', { timeout: 10000 })
-    await expect(page).not.toHaveURL(/\/home\.php/)
+    await page.waitForLoadState('domcontentloaded')
+    await expect(page).toHaveURL('http://localhost:3000/')
   })
 })

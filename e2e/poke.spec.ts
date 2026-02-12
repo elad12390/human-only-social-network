@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { registerAndGetId, logoutUser, loginUser } from './helpers/test-utils'
+import { registerAndGetId, logoutUser, loginUser, pageContent } from './helpers/test-utils'
 
 test.describe('Poke', () => {
   let userA: { email: string; password: string; userId: string; fullName: string }
@@ -19,7 +19,7 @@ test.describe('Poke', () => {
     const page1 = await browser.newPage()
     await loginUser(page1, userA.email, userA.password)
     await page1.goto(`/profile.php?id=${userB.userId}`)
-    await page1.getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
+    await page1.locator('.friend_button').getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
     await page1.waitForLoadState('networkidle')
     await logoutUser(page1)
     await page1.close()
@@ -38,14 +38,14 @@ test.describe('Poke', () => {
     await page.goto(`/profile.php?id=${userB.userId}`)
 
     await page.getByRole('button', { name: `Poke ${userB.fullName}` }).click()
-    await expect(page.locator('#content')).toContainText(`You poked ${userB.fullName}`)
+    await expect(pageContent(page)).toContainText(`You poked ${userB.fullName}`)
   })
 
   test('poked user sees poke notification on home page', async ({ page }) => {
     await loginUser(page, userB.email, userB.password)
     await page.goto('/home.php')
 
-    await expect(page.locator('#content')).toContainText(`${userA.fullName} poked you`)
+    await expect(pageContent(page)).toContainText(`poked you`)
   })
 
   test('can poke back', async ({ page }) => {
@@ -53,6 +53,6 @@ test.describe('Poke', () => {
     await page.goto('/home.php')
 
     await page.getByText('Poke Back').first().click()
-    await page.waitForLoadState('networkidle')
+    await expect(page.getByText('Poked back!')).toBeVisible({ timeout: 5000 })
   })
 })

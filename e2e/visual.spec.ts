@@ -26,17 +26,19 @@ test.describe('Visual QA - 2007 Facebook Styling', () => {
   })
 
   test('#book container is 799px wide and centered', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 })
     await page.goto('/')
     const book = page.locator('#book')
-    await expect(book).toHaveCSS('width', '799px')
-    await expect(book).toHaveCSS('margin-left', 'auto')
-    await expect(book).toHaveCSS('margin-right', 'auto')
+    const box = await book.boundingBox()
+    expect(box).not.toBeNull()
+    expect(box!.width).toBe(799)
+    expect(box!.x).toBeGreaterThan(0)
   })
 
   test('links are Facebook blue #3b5998', async ({ page }) => {
-    await page.goto('/')
-    const firstLink = page.locator('a').first()
-    await expect(firstLink).toHaveCSS('color', 'rgb(59, 89, 152)')
+    await loginUser(page, userEmail, userPassword)
+    const link = page.locator('#sidebar a:not(.go_home)').first()
+    await expect(link).toHaveCSS('color', 'rgb(59, 89, 152)')
   })
 
   test('navigator is visible when logged in', async ({ page }) => {

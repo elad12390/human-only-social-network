@@ -53,8 +53,17 @@ export async function loginUser(
 }
 
 export async function logoutUser(page: Page): Promise<void> {
-  await page.goto('/api/auth/sign-out')
-  await page.waitForLoadState('networkidle')
+  await page.evaluate(async () => {
+    await fetch('/api/auth/sign-out', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+      credentials: 'include',
+    })
+  })
+  await page.context().clearCookies()
+  await page.goto('/')
+  await page.waitForLoadState('domcontentloaded')
 }
 
 export async function getCurrentUserId(page: Page): Promise<string> {
@@ -71,6 +80,10 @@ export async function getCurrentUserId(page: Page): Promise<string> {
     return idMatch[1]
   }
   throw new Error('Could not determine current user ID')
+}
+
+export function pageContent(page: Page) {
+  return page.locator('#page_body #content #content')
 }
 
 export async function waitForReload(page: Page): Promise<void> {

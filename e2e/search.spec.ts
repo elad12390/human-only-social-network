@@ -1,57 +1,67 @@
 import { test, expect } from '@playwright/test'
-import { registerUser, logoutUser, loginUser } from './helpers/test-utils'
+import { registerUser, logoutUser, loginUser, pageContent } from './helpers/test-utils'
 
 test.describe('Search', () => {
-  let userEmail: string
-  let userPassword: string
-  const searchableName = `Searchable${Date.now()}`
+  let searcherEmail: string
+  let searcherPassword: string
+  let targetName: string
 
   test.beforeAll(async ({ browser }) => {
-    const page = await browser.newPage()
-    const creds = await registerUser(page, {
-      firstName: searchableName,
+    const targetPage = await browser.newPage()
+    const targetCreds = await registerUser(targetPage, {
+      firstName: `Findable${Date.now()}`,
       lastName: 'Person',
+      password: 'FindPass123!',
+    })
+    targetName = targetCreds.firstName
+    await logoutUser(targetPage)
+    await targetPage.close()
+
+    const searcherPage = await browser.newPage()
+    const searcherCreds = await registerUser(searcherPage, {
+      firstName: 'Searcher',
+      lastName: 'User',
       password: 'SearchPass123!',
     })
-    userEmail = creds.email
-    userPassword = creds.password
-    await logoutUser(page)
-    await page.close()
+    searcherEmail = searcherCreds.email
+    searcherPassword = searcherCreds.password
+    await logoutUser(searcherPage)
+    await searcherPage.close()
   })
 
   test('can search for a user by name', async ({ page }) => {
-    await loginUser(page, userEmail, userPassword)
+    await loginUser(page, searcherEmail, searcherPassword)
 
-    await page.goto(`/search.php?q=${searchableName}`)
+    await page.goto(`/search.php?q=${targetName}`)
 
-    await expect(page.locator('#content')).toContainText(searchableName)
-    await expect(page.locator('#content')).toContainText('View Profile')
+    await expect(pageContent(page)).toContainText(targetName)
+    await expect(pageContent(page)).toContainText('View Profile')
   })
 
   test('shows no results for nonexistent user', async ({ page }) => {
-    await loginUser(page, userEmail, userPassword)
+    await loginUser(page, searcherEmail, searcherPassword)
 
     await page.goto('/search.php?q=NonexistentUserXYZ999')
 
-    await expect(page.locator('#content')).toContainText('No results found')
+    await expect(pageContent(page)).toContainText('No results found')
   })
 
   test('shows prompt when no search term', async ({ page }) => {
-    await loginUser(page, userEmail, userPassword)
+    await loginUser(page, searcherEmail, searcherPassword)
     await page.goto('/search.php')
 
-    await expect(page.locator('#content')).toContainText('Enter a search term')
+    await expect(pageContent(page)).toContainText('Enter a search term')
   })
 
   test('can use sidebar search form', async ({ page }) => {
-    await loginUser(page, userEmail, userPassword)
+    await loginUser(page, searcherEmail, searcherPassword)
 
     const searchInput = page.locator('#qsearch input[name="q"]')
-    await searchInput.fill(searchableName)
+    await searchInput.fill(targetName)
     await searchInput.press('Enter')
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
 
-    await expect(page).toHaveURL(new RegExp(`search\\.php.*q=${searchableName}`))
-    await expect(page.locator('#content')).toContainText(searchableName)
+    await expect(page).toHaveURL(new RegExp(`search\\.php.*q=${targetName}`))
+    await expect(pageContent(page)).toContainText(targetName)
   })
 })

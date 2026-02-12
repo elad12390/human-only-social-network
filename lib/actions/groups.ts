@@ -20,14 +20,13 @@ export async function createGroup(
   }
 
   try {
-    // Insert group
-    const groupResult = await db.insert(schema.group).values({
+    const [inserted] = await db.insert(schema.group).values({
       name: name.trim(),
       description: description?.trim() || null,
       creatorId,
-    })
+    }).returning({ id: schema.group.id })
 
-    const groupId = groupResult.lastInsertRowid?.toString() || ''
+    const groupId = inserted.id
 
     // Auto-create membership for creator with admin role
     await db.insert(schema.groupMembership).values({

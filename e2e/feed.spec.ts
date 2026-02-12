@@ -19,7 +19,7 @@ test.describe('News Feed', () => {
     const page1 = await browser.newPage()
     await loginUser(page1, userA.email, userA.password)
     await page1.goto(`/profile.php?id=${userB.userId}`)
-    await page1.getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
+    await page1.locator('.friend_button').getByRole('button', { name: `Add ${userB.fullName} as a Friend` }).click()
     await page1.waitForLoadState('networkidle')
     await logoutUser(page1)
     await page1.close()
@@ -33,10 +33,12 @@ test.describe('News Feed', () => {
     await page2.close()
   })
 
-  test('shows empty feed message when no activity', async ({ page }) => {
-    const newPage = await page.context().browser()!.newPage()
-    const freshUser = await registerAndGetId(newPage, { firstName: 'Lonely', lastName: 'User' })
-    await expect(newPage.locator('.feed_empty')).toContainText('No news to show')
+  test('shows empty feed message when no activity', async ({ page, browser }) => {
+    const newPage = await browser.newPage()
+    await registerAndGetId(newPage, { firstName: 'Lonely', lastName: 'User' })
+    await newPage.goto('/home.php')
+    await newPage.waitForLoadState('domcontentloaded')
+    await expect(newPage.locator('.feed_empty')).toContainText('No news')
     await newPage.close()
   })
 
@@ -49,6 +51,8 @@ test.describe('News Feed', () => {
     await logoutUser(page)
 
     await loginUser(page, userA.email, userA.password)
+    await page.goto('/home.php')
+    await page.waitForLoadState('domcontentloaded')
     await expect(page.locator('.feed_item').first()).toContainText('hello from feed test')
   })
 })

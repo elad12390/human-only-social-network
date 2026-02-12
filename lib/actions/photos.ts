@@ -20,13 +20,13 @@ export async function createAlbum(
   }
 
   try {
-    const result = await db.insert(schema.photoAlbum).values({
+    const [inserted] = await db.insert(schema.photoAlbum).values({
       userId,
       name: name.trim(),
       description: description?.trim() || null,
-    })
+    }).returning({ id: schema.photoAlbum.id })
 
-    const albumId = result.lastInsertRowid?.toString() || ''
+    const albumId = inserted.id
 
     return { success: true, albumId }
   } catch (error) {
@@ -155,15 +155,14 @@ export async function addPhoto(
       return { success: false, error: 'Only album owner can add photos' }
     }
 
-    // Insert photo
-    const photoResult = await db.insert(schema.photo).values({
+    const [insertedPhoto] = await db.insert(schema.photo).values({
       albumId,
       userId,
       blobUrl,
       caption: caption?.trim() || null,
-    })
+    }).returning({ id: schema.photo.id })
 
-    const photoId = photoResult.lastInsertRowid?.toString() || ''
+    const photoId = insertedPhoto.id
 
     // Create feed item
     await db.insert(schema.feedItem).values({

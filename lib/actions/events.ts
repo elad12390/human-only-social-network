@@ -24,8 +24,7 @@ export async function createEvent(
   }
 
   try {
-    // Insert event
-    const eventResult = await db.insert(schema.event).values({
+    const [inserted] = await db.insert(schema.event).values({
       name: name.trim(),
       description: description?.trim() || null,
       location: location?.trim() || null,
@@ -33,9 +32,9 @@ export async function createEvent(
       endTime: endTime || null,
       creatorId,
       groupId: groupId || null,
-    })
+    }).returning({ id: schema.event.id })
 
-    const eventId = eventResult.lastInsertRowid?.toString() || ''
+    const eventId = inserted.id
 
     // Create feed item for event creation
     await db.insert(schema.feedItem).values({

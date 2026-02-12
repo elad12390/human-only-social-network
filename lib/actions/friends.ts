@@ -44,14 +44,13 @@ export async function sendFriendRequest(
       return { success: false, error: 'Friendship already exists' }
     }
 
-    // Create friendship with pending status
-    const result = await db.insert(schema.friendship).values({
+    const [inserted] = await db.insert(schema.friendship).values({
       requesterId,
       addresseeId,
       status: 'pending',
-    })
+    }).returning({ id: schema.friendship.id })
 
-    const friendshipId = result.lastInsertRowid?.toString() || ''
+    const friendshipId = inserted.id
 
     // Create notification for addressee
     await db.insert(schema.notification).values({
