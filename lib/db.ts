@@ -1,5 +1,9 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
-import Database from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/libsql'
+import { createClient } from '@libsql/client'
 
-const sqlite = new Database(process.env.TURSO_DATABASE_URL?.replace('file:', '') || 'local.db')
-export const db = drizzle(sqlite)
+const client = createClient({
+  url: process.env.TURSO_DATABASE_URL || 'file:local.db',
+  authToken: process.env.TURSO_AUTH_TOKEN,
+})
+
+export const db = drizzle(client)
