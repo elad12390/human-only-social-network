@@ -6,7 +6,7 @@ The twist: this is a **human-only** social network. You must confirm you're a re
 
 ## Live Demo
 
-> Deployed on Vercel (coming soon)
+**[https://human-only-social-network.vercel.app](https://human-only-social-network.vercel.app)**
 
 ## Features
 
